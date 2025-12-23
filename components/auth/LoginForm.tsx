@@ -28,7 +28,7 @@ const LoginForm = () => {
             [name]: type === 'checkbox' ? checked : value,
         }))
     }
-    //------------Login ----------------//
+    //------------Login(email and password)----------------//
     const handleLogin = async (e: any) => {
         e.preventDefault();
         setLoading(true);
@@ -60,6 +60,8 @@ const LoginForm = () => {
             setLoading(false);
         }
     }
+
+    //------------Login(Phone number)----------------//
 
     if (loading) {
         return (

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr';
 
-export async function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
     let res = NextResponse.next({
         request: {
             headers: req.headers,
@@ -30,19 +30,21 @@ export async function middleware(req: NextRequest) {
 
     console.log('--------', session);
 
+    const pathname = req.nextUrl.pathname
+    if (pathname === '/') {
+        return NextResponse.redirect(new URL('/auth/login', req.url))
+    }
 
     //Public Path
     const publicPath = [
-        "/auth/login",
-        "/auth/signup",
-        "/auth/forgot-password",
-        "/auth/reset-password",
-        "forgot-password",
-        "/login",
-        "signup",
-        "/auth",
-        "/"
+        '/',
+        '/auth',
+        '/auth/login',
+        '/auth/signup',
+        '/auth/forgot-password',
+        '/auth/reset-password',
     ];
+
 
     if (session && publicPath.includes(req.nextUrl.pathname)) {
         return NextResponse.redirect(new URL("/dashboard", req.url));
@@ -57,5 +59,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/((?!_next|api|static|favicon.ico).*)"],
+    matcher: ['/((?!_next|api|static|favicon.ico).*)'],
 }
