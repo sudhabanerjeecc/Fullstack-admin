@@ -3,6 +3,7 @@ import Footer from '@/components/common/Footer'
 import HeaderTop from '@/components/common/HeaderTop'
 import Sidebar from '@/components/common/Sidebar'
 import { checkAuth, getUserDetails } from '@/helper/api/auth/auth';
+import { profiles } from '@/helper/api/users/user';
 import { UserTypes } from '@/types/AuthTypes';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -24,8 +25,24 @@ const ProtectedLayoutClient = ({ children }: { children: React.ReactNode }) => {
                 router.push('/auth/login');
             }
 
-            const loginUser = await getUserDetails();
-            setUserDetails(loginUser);
+            const authUser = await getUserDetails();
+            if (!authUser) {
+                router.replace('/auth/login');
+                return;
+            }
+
+            console.log('loginUser=====', authUser);
+
+            const profile = await profiles();
+            const profileData = profile?.[0] ?? profile?.['0'] ?? {};
+            setUserDetails({
+                id: authUser?.id,
+                email: authUser?.email,
+                avatar: authUser?.user_metadata?.avatar_url,
+                phone: authUser.phone || profileData.phone,
+                full_name: profileData.full_name,
+                created_at: profileData.created_at,
+            })
         }
 
         verifyAuth()

@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import { Spinner } from '../ui/spinner';
 import LoaderCustom from './Loader';
 import { UserTypes } from '@/types/AuthTypes';
+import Image from 'next/image';
+import defaultImage from '../../public/avatar-default.png'
 
 interface HeaderProps {
     onClick: () => void;
@@ -242,10 +244,10 @@ export default function HeaderTop({ onClick, userData }: HeaderProps) {
                         className={`sa-toolbar-user bg-gray-300 ${isProfileDropdown ? 'show' : ''}`} type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                         data-bs-offset="0,1" aria-expanded={`${isProfileDropdown ? 'true' : 'false'}`}>
                         <span className="sa-toolbar-user__avatar sa-symbol sa-symbol--shape--rounded">
-                            <img src="images/customers/customer-4-64x64.jpg" width="64" height="64" alt="" />
+                            <Image src={userData?.avatar || defaultImage} width={64} height={64} alt={userData?.full_name || 'user'} />
                         </span>
                         <span className="sa-toolbar-user__info">
-                            <span className="sa-toolbar-user__title">Konstantin Veselovsky</span>
+                            <span className="sa-toolbar-user__title">{userData?.full_name}</span>
                             <span className="sa-toolbar-user__subtitle">{userData?.email}</span>
                         </span>
                     </Button>

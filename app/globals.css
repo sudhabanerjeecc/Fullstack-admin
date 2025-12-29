@@ -128,3 +128,8 @@
     @apply bg-background text-foreground;
     }
 }
+
+.btn-link{
+    padding: 0 !important;
+    
+}
