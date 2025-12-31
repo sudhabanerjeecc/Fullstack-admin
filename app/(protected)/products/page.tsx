@@ -1,68 +1,48 @@
+"use client"
 import Breadcum from '@/components/common/Breadcum'
-import React from 'react'
+// import SidebarFilter from '@/components/product/SidebarFilter'
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react'
 
 export default function page() {
+
+    const [product, setProduct] = useState('');
+
+    // useEffect(() => {
+    //     const handleProduct = async () => {
+    //         const data = await allProduct();
+    //         setProduct(data);
+    //     }
+    //     handleProduct();
+    // }, []);
+
+    // console.log(product);
+
     return (
         <>
-            <Breadcum />
-            {/* <div className="mx-xxl-3 px-4 px-sm-5 pb-6">
+            <Breadcum
+                title={'products'}
+                items={[
+                    { label: "Dashboard", href: "/dashboard" },
+                    { label: 'Products', active: true }
+                ]}
+                actions={
+                    <>
+                        <Link href="#" className="btn btn-secondary me-3">
+                            Import Product
+                        </Link>
+                        <Link href="/products/add" className="btn btn-primary">
+                            New Product
+                        </Link>
+                    </>
+                }
+            />
+            <div className="mx-xxl-3 px-4 px-sm-5 pb-6">
                 <div className="sa-layout">
                     <div className="sa-layout__backdrop" data-sa-layout-sidebar-close=""></div>
-                    <div className="sa-layout__sidebar">
-                        <div className="sa-layout__sidebar-header">
-                            <div className="sa-layout__sidebar-title">Filters</div>
-                            <button type="button" className="sa-close sa-layout__sidebar-close" aria-label="Close" data-sa-layout-sidebar-close=""></button>
-                        </div>
-                        <div className="sa-layout__sidebar-body sa-filters">
-                            <ul className="sa-filters__list">
-                                <li className="sa-filters__item">
-                                    <div className="sa-filters__item-title">Price</div>
-                                    <div className="sa-filters__item-body">
-                                        <div className="sa-filter-range" data-min="0" data-max="2000" data-from="0" data-to="2000">
-                                            <div className="sa-filter-range__slider"></div>
-                                            <input type="hidden" value="0" className="sa-filter-range__input-from" /><input type="hidden" value="2000" className="sa-filter-range__input-to" />
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="sa-filters__item">
-                                    <div className="sa-filters__item-title">Categories</div>
-                                    <div className="sa-filters__item-body">
-                                        <ul className="list-unstyled m-0 mt-n2">
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" checked="" />Power tools</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" />Hand tools</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" checked="" />Machine tools</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" />Power machinery</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" />Measurement</label></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li className="sa-filters__item">
-                                    <div className="sa-filters__item-title">Product type</div>
-                                    <div className="sa-filters__item-body">
-                                        <ul className="list-unstyled m-0 mt-n2">
-                                            <li><label className="d-flex align-items-center pt-2"><input type="radio" className="form-check-input m-0 me-3 fs-exact-16" name="filter-product_type" checked="" />Simple</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="radio" className="form-check-input m-0 me-3 fs-exact-16" name="filter-product_type" />Variable</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="radio" className="form-check-input m-0 me-3 fs-exact-16" name="filter-product_type" />Digital</label></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li className="sa-filters__item">
-                                    <div className="sa-filters__item-title">Brands</div>
-                                    <div className="sa-filters__item-body">
-                                        <ul className="list-unstyled m-0 mt-n2">
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" />Brandix</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" checked="" />FastWheels</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" checked="" />FuelCorp</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" />RedGate</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" />Specter</label></li>
-                                            <li><label className="d-flex align-items-center pt-2"><input type="checkbox" className="form-check-input m-0 me-3 fs-exact-16" />TurboElectric</label></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    {/* <SidebarFilter /> */}
                     <div className="sa-layout__content">
+
                         <div className="card">
                             <div className="p-4">
                                 <div className="row g-4">
@@ -814,7 +794,7 @@ export default function page() {
                         </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </>
     )
 }

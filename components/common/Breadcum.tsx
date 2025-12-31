@@ -1,7 +1,12 @@
+import { BreadcumTypes } from '@/types/GeneralTyles'
 import Link from 'next/link'
 import React from 'react'
 
-const Breadcum = () => {
+const Breadcum = ({
+    title,
+    items = [],
+    actions = null
+}: BreadcumTypes) => {
     return (
         <div className="mx-xxl-3 px-4 px-sm-5">
             <div className="py-5">
@@ -9,16 +14,22 @@ const Breadcum = () => {
                     <div className="col">
                         <nav className="mb-2" aria-label="breadcrumb">
                             <ol className="breadcrumb breadcrumb-sa-simple">
-                                <li className="breadcrumb-item"><Link href="index.html">Dashboard</Link></li>
-                                <li className="breadcrumb-item active" aria-current="page">Products</li>
+                                {items?.map((item, index) => (
+                                    <li key={index} className={`breadcrumb-item ${item.active ? 'active' : ''}`}
+                                        aria-current={item.active ? 'page' : undefined}>
+                                        {item?.href ? (
+                                            <Link href={item.href}>{item.label} &nbsp;/</Link>
+                                        ) : (
+                                            item.label
+                                        )}
+
+                                    </li>
+                                ))}
                             </ol>
                         </nav>
-                        <h1 className="h3 m-0">Products</h1>
+                        <h1 className="h3 m-0 capitalize">{title}</h1>
                     </div>
-                    <div className="col-auto d-flex">
-                        <Link href="#" className="btn btn-secondary me-3">Import</Link>
-                        <Link href="app-product.html" className="btn btn-primary">New product</Link>
-                    </div>
+                    {actions && <div className="col-auto d-flex">{actions}</div>}
                 </div>
             </div>
         </div>

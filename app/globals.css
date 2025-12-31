@@ -133,3 +133,6 @@
     padding: 0 !important;
     
 }
+.breadcrumb-item + .breadcrumb-item:before{
+    display: none !important;
+}
