@@ -136,3 +136,6 @@
 .breadcrumb-item + .breadcrumb-item:before{
     display: none !important;
 }
+.sa-nav--sidebar .sa-nav__menu-item--open > .sa-nav__menu--sub{
+        padding-left: 20px;
+}

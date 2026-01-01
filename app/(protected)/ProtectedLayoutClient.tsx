@@ -31,8 +31,6 @@ const ProtectedLayoutClient = ({ children }: { children: React.ReactNode }) => {
                 return;
             }
 
-            console.log('loginUser=====', authUser);
-
             const profile = await profiles();
             const profileData = profile?.[0] ?? profile?.['0'] ?? {};
             setUserDetails({

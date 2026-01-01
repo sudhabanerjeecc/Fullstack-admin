@@ -24,8 +24,6 @@ export async function signupUser({ full_name, email, password, phone }: SignupUs
         throw new Error(error.message);
     }
 
-    console.log('created', data);
-
     if (data?.user && phone && full_name) {
         const { error: profileError } = await supabase
             .from('profiles')

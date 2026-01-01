@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea';
@@ -14,10 +14,20 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import LoaderCustom from '../common/Loader';
 import { toast } from 'sonner';
-import { addProduct } from '@/helper/api/product/product';
+import { addProduct, fetchCategories, uploadFile } from '@/helper/api/product/product';
+import { FileUploader } from "react-drag-drop-files";
+import Image from 'next/image';
+import { CategoryProps } from '@/types/ProductsTypes';
+
+const fileTypes = ["JPG", "PNG", "GIF"];
 
 const AddProductForm = () => {
     const [loading, setLoading] = useState(false);
+    const [productImg, setProductImg] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [categories, setCategories] = useState<CategoryProps[]>([]);
+
+    // const [file, setFile] = useState(null);
     const [formData, setFormData] = useState({
         productName: '',
         productSlug: '',
@@ -30,6 +40,7 @@ const AddProductForm = () => {
         productImage: ''
 
     })
+    //-------Input Event Handler--------------
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
         setFormData((prev) => ({
@@ -38,10 +49,46 @@ const AddProductForm = () => {
         }));
     }
 
+    //-------File Event Handler--------------
+    const handleChange = (file: File | File[]) => {
+        const selectedFile = Array.isArray(file) ? file[0] : file;
+        setProductImg(selectedFile)
+        setPreviewUrl(URL.createObjectURL(selectedFile));
+    }
+
+    //--------Preview Image Upload----------
+    useEffect(() => {
+        return () => {
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+            }
+        };
+    }, [previewUrl]);
+
+    //--------Category Listing----------
+
+    useEffect(() => {
+        const getAllCategory = async () => {
+            try {
+                const cat = await fetchCategories();
+                setCategories(cat);
+
+            } catch (error: any) {
+                console.error(error.message)
+            }
+        }
+        getAllCategory();
+    }, []);
+
+    //--------Add product-----------
     const handleAddProduct = async (e: any) => {
         e.preventDefault();
         setLoading(true);
         try {
+            let imageUrl = null;
+            if (productImg) {
+                imageUrl = await uploadFile(productImg)
+            }
             await addProduct({
                 name: formData.productName,
                 sku: formData.sku,
@@ -49,7 +96,8 @@ const AddProductForm = () => {
                 sale_price: formData.salePrice,
                 stock: formData.quantity,
                 description: formData.description,
-                short_description: formData.shortDescription
+                short_description: formData.shortDescription,
+                image_url: imageUrl
 
             })
             toast.success('Product Added Successfully!', {
@@ -207,14 +255,32 @@ const AddProductForm = () => {
                         </div>
                         <div className="mb-4">
                             <Label htmlFor="form-product/productImage" className="form-Label">Upload Product</Label>
-                            <Input
+                            <FileUploader
+                                multiple={false}
+                                handleChange={handleChange}
+                                name="file"
+                                types={fileTypes}
+                            />
+                            {previewUrl && (
+                                <Image
+                                    src={previewUrl}
+                                    alt="Product Preview"
+                                    width={200}
+                                    height={200}
+                                    className="w-40 h-40 object-cover rounded border mt-4"
+                                />
+                            )}
+                            {/* <Input
                                 type="file"
+                                accept='image/png,image/jpeg'
                                 name='productImage'
                                 className="form-control"
-                                id="form-product/productImage"
-                                value={formData.productImage}
-                                onChange={handleChangeInput}
-                            />
+                                onChange={(e) => {
+                                    if (e.target.files && e.target.files[0]) {
+                                        setProductImg(e.target.files[0])
+                                    }
+                                }}
+                            /> */}
                         </div>
                     </div>
                 </div>
@@ -230,9 +296,9 @@ const AddProductForm = () => {
                                 <SelectValue placeholder="Theme" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="light">Power tools</SelectItem>
-                                <SelectItem value="dark">Screwdrivers</SelectItem>
-                                <SelectItem value="system">Chainsaws</SelectItem>
+                                {categories?.map((item) => (
+                                    <SelectItem key={item.id} value={item?.slug}>{item?.name}</SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
                         <div className="mt-4 mb-n2">

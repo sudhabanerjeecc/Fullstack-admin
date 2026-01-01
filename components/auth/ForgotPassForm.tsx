@@ -21,8 +21,6 @@ const ForgotPassForm = () => {
         }))
     }
 
-    console.log(formData);
-
     const handleForgotPassword = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);

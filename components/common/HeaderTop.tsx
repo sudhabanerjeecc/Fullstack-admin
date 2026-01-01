@@ -22,7 +22,6 @@ export default function HeaderTop({ onClick, userData }: HeaderProps) {
     const [loading, setLoading] = useState(false);
     const [isProfileDropdown, setIsProfileDropdown] = useState(false);
 
-    console.log('email', userData);
 
     const handleSearchBarShrink = () => {
         setIsActiveSearch(true);

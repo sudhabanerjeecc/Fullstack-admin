@@ -92,8 +92,6 @@ const LoginForm = () => {
                 email: formData.email,
                 password: formData.password,
             });
-
-            console.log(data);
             toast.success('Login Successfull!', {
                 style: {
                     background: 'green',
