@@ -25,7 +25,7 @@ export default function RootLayout({
         className={` ${roboto.className} antialiased font-bold`}
       >
         {children}
-        <Toaster className="right-0 top-0! h-auto text-base!" />
+        <Toaster richColors closeButton className="toaster right-0 top-0! h-auto text-base!" />
       </body>
     </html>
   );

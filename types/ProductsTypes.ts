@@ -25,3 +25,15 @@ export interface ProductProps {
     short_description: string;
     sale_price: string;
 }
+
+export interface FetchProductParams {
+    page?: number;
+    limit?: number;
+}
+export interface FetchProductsResponse {
+    products: ProductProps[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}

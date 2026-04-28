@@ -1,7 +1,9 @@
 import { createClient } from "@/lib/supabase/client";
-import { BrandProps, CategoryProps, ProductProps } from "@/types/ProductsTypes";
+import { BrandProps, CategoryProps, FetchProductParams, FetchProductsResponse, } from "@/types/ProductsTypes";
 import { format } from "path";
 import { toast } from "sonner";
+
+
 
 //-------Get All Category----------
 export async function fetchCategories(): Promise<CategoryProps[]> {
@@ -45,9 +47,17 @@ export async function fetchBrands(): Promise<BrandProps[]> {
 }
 
 //-------Get All Products----------
-export async function fetchProducts(): Promise<ProductProps[]> {
+export async function fetchProducts({page = 1, limit = 10}: FetchProductParams): Promise<FetchProductsResponse> {
     const supabase = await createClient()
-    const { data, error } = await supabase.from('products').select('*');
+
+    const from = (page - 1) * limit;
+    const to = from + limit -1;
+
+    const { data, error, count } = await supabase
+        .from('products')
+        .select("*", { count: "exact" })
+        .order("created_at", {ascending: false})
+        .range(from, to);
     if (error) {
         toast.error(error.message, {
             style: {
@@ -58,7 +68,13 @@ export async function fetchProducts(): Promise<ProductProps[]> {
         })
         throw new Error(error.message);
     }
-    return data ?? [];
+    return {
+        products: data ?? [],
+        total: count ?? 0,
+        page,
+        limit,
+        totalPages: Math.ceil((count ?? 0) / limit),
+    };
 }
 
 //--------Add Product-----------
