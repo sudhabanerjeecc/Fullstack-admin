@@ -14,18 +14,23 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import LoaderCustom from '../common/Loader';
 import { toast } from 'sonner';
-import { addProduct, fetchCategories, uploadFile } from '@/helper/api/product/product';
+import { addProduct, fetchBrands, fetchCategories, uploadFile } from '@/helper/api/product/product';
 import { FileUploader } from "react-drag-drop-files";
 import Image from 'next/image';
-import { CategoryProps } from '@/types/ProductsTypes';
+import { BrandProps, CategoryProps } from '@/types/ProductsTypes';
+import { useRouter } from 'next/navigation';
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
 const AddProductForm = () => {
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [productImg, setProductImg] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [categories, setCategories] = useState<CategoryProps[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [brands, setBrands] = useState<BrandProps[]>([]);
+    const [selectedBrand, setSelectedBrand] = useState<string>('');
 
     // const [file, setFile] = useState(null);
     const [formData, setFormData] = useState({
@@ -66,22 +71,37 @@ const AddProductForm = () => {
     }, [previewUrl]);
 
     //--------Category Listing----------
-
     useEffect(() => {
         const getAllCategory = async () => {
             try {
                 const cat = await fetchCategories();
                 setCategories(cat);
 
-            } catch (error: any) {
-                console.error(error.message)
+            } catch (error) {
+                const errorMessage = error instanceof Error ? error.message : 'failed to fetch category';
+                console.error(errorMessage)
             }
         }
         getAllCategory();
     }, []);
 
+    //---------Brands Listing----------
+
+    useEffect(() => {
+        const getAllBrands = async () => {
+            try {
+                const brand = await fetchBrands();
+                setBrands(brand);
+            } catch (error) {
+                const errorMsg = error instanceof Error ? error.message : 'Failed to fetch Brand';
+                console.error(errorMsg)
+            }
+        }
+        getAllBrands();
+    }, []);
+
     //--------Add product-----------
-    const handleAddProduct = async (e: any) => {
+    const handleAddProduct = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         try {
@@ -97,7 +117,9 @@ const AddProductForm = () => {
                 stock: formData.quantity,
                 description: formData.description,
                 short_description: formData.shortDescription,
-                image_url: imageUrl
+                image_url: imageUrl,
+                category_id: selectedCategory,
+                brand_id: selectedBrand,
 
             })
             toast.success('Product Added Successfully!', {
@@ -107,8 +129,10 @@ const AddProductForm = () => {
                     fontSize: '16px',
                 }
             })
-        } catch (error: any) {
-            toast.error(error.message, {
+            router.push('/products');
+        } catch (error) {
+            const errMsg = error instanceof Error ? error.message : 'Failed to add Products';
+            toast.error(errMsg, {
                 style: {
                     background: "#DC2626",
                     color: "#fff",
@@ -119,6 +143,8 @@ const AddProductForm = () => {
             setLoading(false);
         }
     }
+
+    console.log(selectedCategory);
 
     if (loading) {
         return (
@@ -221,7 +247,7 @@ const AddProductForm = () => {
                 </div>
                 <div className="card mt-5">
                     <div className="card-body p-5">
-                        <h2 className="mb-5"> Inventory</h2>
+                        <h2 className="fs-exact-18 mb-5"> Inventory</h2>
                         <div className='grid grid-cols-2 gap-4'>
                             <div className="mb-4">
                                 <Label htmlFor="form-product/sku" className="form-Label">SKU</Label>
@@ -291,13 +317,21 @@ const AddProductForm = () => {
                         <div className="mb-5">
                             <h2 className="mb-0 fs-exact-18">Categories</h2>
                         </div>
-                        <Select>
+                        <Select
+                            value={selectedCategory}
+                            onValueChange={(id) => setSelectedCategory(id)}
+                        >
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Theme" />
                             </SelectTrigger>
                             <SelectContent>
                                 {categories?.map((item) => (
-                                    <SelectItem key={item.id} value={item?.slug}>{item?.name}</SelectItem>
+                                    <SelectItem
+                                        key={item.id}
+                                        value={item?.id}
+                                    >
+                                        {item?.name}
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
@@ -311,14 +345,17 @@ const AddProductForm = () => {
                         <div className="mb-5">
                             <h2 className="mb-0 fs-exact-18">Tags</h2>
                         </div>
-                        <Select>
+                        <Select
+                            value={selectedBrand}
+                            onValueChange={(id: string) => setSelectedBrand(id)}
+                        >
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Theme" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="light">Power tools</SelectItem>
-                                <SelectItem value="dark">Screwdrivers</SelectItem>
-                                <SelectItem value="system">Chainsaws</SelectItem>
+                                {brands?.map((item) => (
+                                    <SelectItem key={item?.id} value={item?.id}>{item?.name}</SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
                         <div className='w-full flex justify-end'>

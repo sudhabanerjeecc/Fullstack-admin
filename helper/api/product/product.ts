@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { CategoryProps } from "@/types/ProductsTypes";
+import { BrandProps, CategoryProps, ProductProps } from "@/types/ProductsTypes";
 import { format } from "path";
 import { toast } from "sonner";
 
@@ -8,8 +8,56 @@ export async function fetchCategories(): Promise<CategoryProps[]> {
     const supabase = await createClient();
     const { data, error } = await supabase
         .from('categories')
-        .select('*')
+        .select('*');
 
+    if (error) {
+        toast.error(error.message, {
+            style: {
+                background: "#DC2626",
+                color: "#fff",
+                fontSize: '16px'
+            },
+        })
+        throw new Error(error.message);
+    }
+
+    return data ?? [];
+}
+
+//-------Get All Brands----------
+export async function fetchBrands(): Promise<BrandProps[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from('brands').select('*');
+
+    if (error) {
+        toast.error(error.message, {
+            style: {
+                background: "#DC2626",
+                color: "#fff",
+                fontSize: '16px'
+            },
+        })
+        throw new Error(error.message);
+    }
+
+    return data ?? [];
+
+}
+
+//-------Get All Products----------
+export async function fetchProducts(): Promise<ProductProps[]> {
+    const supabase = await createClient()
+    const { data, error } = await supabase.from('products').select('*');
+    if (error) {
+        toast.error(error.message, {
+            style: {
+                background: "#DC2626",
+                color: "#fff",
+                fontSize: '16px'
+            },
+        })
+        throw new Error(error.message);
+    }
     return data ?? [];
 }
 
