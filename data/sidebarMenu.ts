@@ -1,3 +1,5 @@
+import { Grid2X2, Cuboid, ShoppingBasket, UsersRound, Inbox, MessageSquareMore, FileText, Info, ListTodo, Handshake } from "lucide-react"
+
 export const sidebarMenu = {
   "sections": [
     {
@@ -5,12 +7,12 @@ export const sidebarMenu = {
       "items": [
         {
           "title": "Dashboard",
-          "icon": "dashboard",
+          "icon": Grid2X2,
           "href": "/dashboard"
         },
         {
           "title": "Catalog",
-          "icon": "catalog",
+          "icon": Cuboid,
           "children": [
             { "title": "Products List", "href": "/products" },
             { "title": "Product", "href": "/product" },
@@ -20,7 +22,7 @@ export const sidebarMenu = {
         },
         {
           "title": "Customers",
-          "icon": "customers",
+          "icon": UsersRound,
           "children": [
             { "title": "Customers List", "href": "/customers" },
             { "title": "Customer", "href": "/customer" }
@@ -28,7 +30,7 @@ export const sidebarMenu = {
         },
         {
           "title": "Orders",
-          "icon": "orders",
+          "icon": ShoppingBasket,
           "children": [
             { "title": "Orders List", "href": "/orders" },
             { "title": "Order Details", "href": "/order" }
@@ -36,7 +38,7 @@ export const sidebarMenu = {
         },
         {
           "title": "Inbox",
-          "icon": "envelope",
+          "icon": Inbox,
           "children": [
             { "title": "List", "href": "/inbox" },
             { "title": "Conversation", "href": "/inbox/conversation" }
@@ -44,7 +46,7 @@ export const sidebarMenu = {
         },
         {
           "title": "Chat",
-          "icon": "chat",
+          "icon": MessageSquareMore,
           "badge": 8,
           "href": "/chat"
         },
@@ -53,10 +55,10 @@ export const sidebarMenu = {
     {
       "title": "Pages",
       "items": [
-        { "title": "Invoice", "icon": "file", "href": "/invoice" },
-        { "title": "FAQ", "icon": "info", "href": "/faq" },
-        { "title": "Terms And Conditions", "icon": "check", "href": "/terms" },
-        { "title": "Help Center", "icon": "help", "href": "/help" },
+        { "title": "Invoice", "icon": FileText, "href": "/invoice" },
+        { "title": "FAQ", "icon": Info, "href": "/faq" },
+        { "title": "Terms And Conditions", "icon": ListTodo, "href": "/terms" },
+        { "title": "Help Center", "icon": Handshake, "href": "/help" },
       ]
     }
   ]

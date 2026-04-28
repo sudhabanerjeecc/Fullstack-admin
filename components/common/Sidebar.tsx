@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Logo from './Logo'
 import { sidebarMenu } from '@/data/sidebarMenu'
 import Link from 'next/link'
+import { ChevronRight } from 'lucide-react';
 
 export default function Sidebar() {
     const [isOpenDropdown, setIsOpenDropdown] = useState<number | null>(null);
@@ -22,20 +23,18 @@ export default function Sidebar() {
                                 <ul className="sa-nav__menu sa-nav__menu--root">
                                     {parentMenu?.items?.map((subMenu, index: number) => {
                                         const isOpen = isOpenDropdown === index
+                                        const Icon = subMenu?.icon;
                                         return (
                                             <li key={index} className={`sa-nav__menu-item sa-nav__menu-item--has-icon ${isOpen ? 'sa-nav__menu-item--open' : ''}`}
                                                 data-sa-collapse-item="sa-nav__menu-item--open">
                                                 <Link href={subMenu?.href || "#"} className="sa-nav__link" onClick={() => handleToggleSideBar(index)} data-sa-collapse-trigger="">
-                                                    <span className="sa-nav__icon"><i className="fas fa-lock"></i></span>
+                                                    <span className="sa-nav__icon">
+                                                        {Icon && typeof Icon !== "string" ? <Icon size={20} /> : null}
+                                                    </span>
                                                     <span className="sa-nav__title">{subMenu?.title}</span>
                                                     {subMenu?.children &&
                                                         <span className="sa-nav__arrow">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="9"
-                                                                viewBox="0 0 6 9" fill="currentColor">
-                                                                <path
-                                                                    d="M5.605,0.213 C6.007,0.613 6.107,1.212 5.706,1.612 L2.696,4.511 L5.706,7.409 C6.107,7.809 6.107,8.509 5.605,8.808 C5.204,9.108 4.702,9.108 4.301,8.709 L-0.013,4.511 L4.401,0.313 C4.702,-0.087 5.304,-0.087 5.605,0.213 Z">
-                                                                </path>
-                                                            </svg>
+                                                            <ChevronRight />
                                                         </span>
                                                     }
                                                 </Link>
