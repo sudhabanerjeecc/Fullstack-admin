@@ -90,7 +90,7 @@ export default function HeaderTop({ onClick, userData }: HeaderProps) {
                         </svg>
                     </button>
                 </div> */}
-                <div className="sa-toolbar__item dropdown">
+                {/* <div className="sa-toolbar__item dropdown">
                     <button className="sa-toolbar__button" type="button" id="dropdownMenuButton3"
                         data-bs-toggle="dropdown" data-bs-reference="parent" data-bs-offset="0,1"
                         aria-expanded="false"><img src="vendor/flag-icons/24/DE.png" className="sa-language-icon"
@@ -112,7 +112,7 @@ export default function HeaderTop({ onClick, userData }: HeaderProps) {
                             src="vendor/flag-icons/24/IT.png" className="sa-language-icon me-3" alt="" /><span
                                 className="ps-2">Italian</span></a></li>
                     </ul>
-                </div>
+                </div> */}
                 <div className="sa-toolbar__item dropdown">
                     <button className="sa-toolbar__button" type="button" id="dropdownMenuButton2"
                         data-bs-toggle="dropdown" data-bs-reference="parent" data-bs-offset="0,1"
